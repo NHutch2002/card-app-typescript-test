@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Changing the background colour of the application depending on the theme state */
+body {
+    background-color: #f5eee0;
+}
+
+.dark body {
+    background-color: #151515;
+}

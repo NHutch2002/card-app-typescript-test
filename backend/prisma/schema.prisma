@@ -10,9 +10,11 @@ datasource db {
   url      = "file:./database.db"
 }
 
+// Added scheduled field to Entry model
 model Entry {
   id          String   @id @default(uuid())
   title       String
   description String
   created_at  DateTime
+  scheduled   DateTime
 }

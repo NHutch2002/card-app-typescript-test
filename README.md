@@ -1,104 +1,40 @@
-# Integrum ESG interview - Card App 🎴🃏
+# Nathan Hutchison's Solution to the Integrum ESG Card App Challenge
 
-Simple card app created with Typescript Stack
-Converted to a test from the [original](https://github.com/ThomiWidescreen/card-app-typescript)
+This repository acts as my solution to the challenge set by Integrum ESG. I will briefly detail my process for each of the tasks set!
 
-## Prerequisites
+## Add a Dark Mode
 
-NodeJS - if you don't already have it installed, check out [nvm](https://github.com/nvm-sh/nvm).
+Starting with the Dark Mode Toggling - I created a toggle button within the NavBar of the page that includes two icons, a sun and a moon, representing light and dark mode respectively. The application uses the current Dark Mode state to determine which of these icons should be fully opaque, and which should be semi-transparent (at 20% opacity). Clicking on this toggles a state variable, which updates the main class list to add or remove the class "dark". This is the standard way of implementing a dark mode with Tailwind CSS, and allows for easier styling later on
 
-### Development set-up
+Toggling Dark Mode adjusts the colour scheme of the website, from a cream and blue to a dark grey and orange colour scheme. The shadow on the original cards is swapped for a bright orange glowing effect, with the background flipped from light grey to dark grey and text flipped from black to white. The "New Entry" and "Update Entry" pages are also updated with a similar styling to maintain consistency throughout.
 
-If you don't have a favorite editor we highly recommend [VSCode](https://code.visualstudio.com).
 
-Recommended VSCode extensions:
+## Add a Scheduled Date to the cards
 
-- [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
-- [Tailwind](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+The first step of adding a Scheduled Date was to adjust the Backend to support the extra field. I adjusted the Entry interface in context.d.ts to add the "scheduled" field with type "Date | string". I similarly adjusted the Entry model of the schema in schema.prisma to add the field "scheduled" with type DateTime. Lastly for the Backend, I adjusted the create and update server functions in server.ts to format the scheduled date in the same way as the "created_at" date was formatted to prevent server errors.
 
-# Instruction to candidates
+On the Frontend, there was only minor adjustments needed. This included adapting the NewEntry.tsx and EditEntry.tsx files to include a new field for the scheduled date (using the same idea as the pre-existing created_at date field). I also adjusted the entries in AllEntries.tsx to add the new field to the cards, represented at the top right of the card.
 
-Your assignment is to improve this application. At the moment the application is simple and can only create and remove todos.
 
-Fork this project into your own on github
+## Add tests to the Backend
 
-Clone it onto a machine with node and a development environment (we use VScode)
-Follow the instructions below to run the back end and the front end.
+To test the Backend, I made use of the pre-existing file server.test.ts. Within this testing suite, I wrote up 11 tests in total, broken into five sections for each of the different database functions, namely:
 
-Then make changes to:
+* Get All Entries
+* Get a Single Entry
+* Create an Entry
+* Delete an Entry
+* Update an Entry
 
-- Add a dark mode. Create a settings dialog to set it - and change the styling to render a dark mode. Consider how the current setting is passed to the components (and describe it in your covering email)
-- Add a scheduled date to the cards. This involves adding a column in the database, changing the backend service and changing the frontend card entry and display components
-- Add tests to the backend. There are some clues [here](https://www.fastify.io/docs/latest/Guides/Testing/) and [here](https://jestjs.io/docs/using-matchers).
+The tests makes use of "Prisma.entry.create()" when needed to pre-populate a database when required. This helps isolate the tests to only use one function within each test case. The testing suite also deletes any existing local database entries before each test runs to prevent potential clashing data.
 
-If you feel constrained by time (which is totally fine!), prioritize quality over quantity.
+With the exception of the Get All Entries section, each section tests against a theoretically correct case and at least one incorrect case (e.g. faulty data, missing data, getting non-existent entries). 
 
-Email us the link to your repo when you're done. Please also include a short write up describing the rationale of the changes you have made.
 
-# Features
+### Other minor changes
 
-- Mutiple Routes for each action.
-- Local Backend Database
-- You can View, Create, Update, Delete simple cards.
+Some further small Quality of Life changes I made:
 
-# Stack
-
-## Front End
-
-- React ⚛
-- React Router DOM 🔀
-- Tailwind CSS 🐦
-
-## Back End
-
-- Fastify 🚀
-- Prisma ORM 🅿
-- SQLite ▪
-
-# Deploy
-
-Git hooks are used to automatically format committed files. To setup the hooks run:
-
-```bash
-npm i
-```
-
-The front end works in port 3000 and the backend works in the port 3001.
-
-## Back End
-
-```bash
-npm install
-
-npm run prisma-setup
-
-npm start
-```
-
-To have the backend restart when changes have been made to `.ts`, `.prisma` and `.sql` files:
-
-Replace `npm start` with `npm run dev`
-
-To run the tests:
-
-```bash
-npm run test
-```
-
-## Front End
-
-```bash
-npm install
-
-npm start
-```
-
-To deploy a final build with static files:
-
-```bash
-npm run build
-
-cd ./dist
-
-npx serve -p 3000 -s
-```
+* Creating or Updating a card now pops up with an Alert to tell the user their action was received and redirects them back to the home page. This action happens regardless of the status of the create/update attempt, but in a real world example this could be achieved by slightly modifying the context wrapper to include a return of the server response
+* Automatically redirecting back to the Home page once an Entry has been created/updated (including refreshing the component itself to prevent stale data) 
+* Adjusting the layout of the forms slightly by increasing width and adding labels to the input fields (to help differentiate the "Created At" date and "Scheduled For" date)
