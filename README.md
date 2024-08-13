@@ -4,7 +4,7 @@ Hi there! This repository acts as my solution to the challenge set by Integrum E
 
 ## Add a Dark Mode
 
-Starting with the Dark Mode Toggling - I created a toggle button within the NavBar of the page that includes two icons, a sun and a moon, representing light and dark mode respectively. The application uses the current Dark Mode state to determine which of these icons should be fully opaque, and which should be semi-transparent (at 20% opacity). Clicking on this toggles a state variable, which updates the main class list to add or remove the class "dark". This is the standard way of implementing a dark mode with Tailwind CSS, and allows for easier thematic styling later on
+Starting with the Dark Mode Toggling - I created a toggle button within the NavBar of the page that includes two icons, a sun and a moon, representing light and dark mode respectively. The application uses the current Dark Mode state to determine which of these icons should be fully opaque, and which should be semi-transparent (at 20% opacity). Clicking on this toggles a state variable, which updates the main "html" class list to add or remove the class "dark". This is the standard way of implementing a dark mode with Tailwind CSS, and allows for easier thematic styling later on
 
 Toggling Dark Mode adjusts the colour scheme of the website, from a cream and blue to a dark grey and orange colour scheme. The shadow on the original cards is swapped for a bright orange glowing effect, with the background flipped from light grey to dark grey and text flipped from black to white. The "New Entry" and "Update Entry" pages are also updated with a similar styling to maintain consistency throughout.
 
